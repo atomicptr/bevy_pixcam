@@ -27,6 +27,7 @@ bevy = { version = "0.15.0", default-features = false, features = [
     "png",
     "multi_threaded",
     "x11",
+    "wayland"
 ] }
 
 [[example]]
