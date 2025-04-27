@@ -10,7 +10,6 @@ fn main() {
     App::new()
         .insert_resource(ClearColor(Color::srgb(0.2, 0.2, 0.2)))
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
-        .insert_resource::<Msaa>(Msaa::Off)
         .add_plugins(PixelCameraPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, close_on_esc)
