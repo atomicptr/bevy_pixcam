@@ -1,6 +1,6 @@
-# bevy_picam
+# bevy_pixcam
 
-A simple camera plugin for the Bevy game engine, to help with the use of
+A simple camera plugin for the Bevy game engine (0.15+), to help with the use of
 pixel-art sprites.
 
 This crates provides a plugin to automatically configure Bevy's
@@ -12,7 +12,7 @@ sceen as possible.
 The plugin can also automatically set and resize the viewport of the camera
 to match the target resolution.
 
-This is a hard fork of [bevy_pixel_camera](https://github.com/drakmaniso/bevy_pixel_camera)
+**Note**: This is a hard fork of the great [bevy_pixel_camera](https://github.com/drakmaniso/bevy_pixel_camera)
 
 ## Comparison with other methods
 
@@ -92,9 +92,13 @@ cargo run --example flappin
 
 ## Bevy versions supported
 
-| bevy   | bevy_pixcam |
-|--------|-------------|
-| 0.15.x | 0.15.x      |
+`bevy_pixcam` is not using semver, every release uses the same major and minor versions as `bevy` while the patch part is reserved
+for all kinds of changes, be it bug fixes or feature updates.
+
+| bevy   | bevy_pixcam | branch |
+|--------|-------------|--------|
+| 0.16.x | 0.16.x      | master |
+| 0.15.x | 0.15.x      | 0.15   |
 
 ## Migrating from bevy_pixel_camera
 

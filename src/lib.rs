@@ -32,14 +32,8 @@
 //!   look);
 //! - may be more efficient (in most cases, the difference is probably
 //!   negligible on modern computers).
-mod pixel_border;
-mod pixel_camera;
-mod pixel_plugin;
-mod pixel_zoom;
+mod plugin;
+mod zoom;
 
-#[allow(deprecated)]
-pub use pixel_border::*;
-#[allow(deprecated)]
-pub use pixel_camera::*;
-pub use pixel_plugin::*;
-pub use pixel_zoom::*;
+pub use plugin::*;
+pub use zoom::*;

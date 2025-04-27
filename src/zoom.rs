@@ -1,16 +1,16 @@
 use bevy::{
+    platform::collections::HashSet,
     prelude::*,
-    render::camera::{NormalizedRenderTarget, ScalingMode, Viewport},
-    utils::HashSet,
+    render::camera::{NormalizedRenderTarget, Viewport},
     window::{PrimaryWindow, WindowCreated, WindowResized},
 };
 
-#[derive(Component, Debug, Clone, PartialEq)]
-/// Configure a `Camera2dBundle` to use integer scaling and automatically match
+/// Configure a `Camera2d` to use integer scaling and automatically match
 /// a specified resolution.
 ///
 /// Note: when this component is present, a plugin system will automatically
 /// update the `ScalingMode` of the camera bundle.
+#[derive(Component, Debug, Clone, PartialEq)]
 pub enum PixelZoom {
     /// Manually specify the camera zoom, i.e. the number of screen pixels
     /// (logical pixels) used to display one virtual pixel (world unit).
@@ -26,10 +26,10 @@ pub enum PixelZoom {
     FitHeight(i32),
 }
 
-#[derive(Component, Debug, Clone, PartialEq)]
-/// Configure a `Camera2dBundle` to automatically set the viewport so that only
+/// Configure a `Camera2d` to automatically set the viewport so that only
 /// pixels inside the desired resolution (as defined by the `PixelZoom`
 /// component) are displayed.
+#[derive(Component, Debug, Clone, PartialEq)]
 pub struct PixelViewport;
 
 pub(crate) fn pixel_zoom_system(
@@ -41,14 +41,10 @@ pub(crate) fn pixel_zoom_system(
         &mut Camera,
         &PixelZoom,
         Option<&PixelViewport>,
-        &mut OrthographicProjection,
+        &mut Projection,
     )>,
 ) {
-    // Most of the change detection code is copied from `bevy_render/src/camera`
-
-    // TODO: maybe this can be replaced with just monitoring
-    // `OrthographicProjection` for changes?
-
+    // Most of the change detection code is copied from https://github.com/bevyengine/bevy/blob/v0.11.0/crates/bevy_render/src/camera/camera.rs
     let primary_window = primary_window.iter().next();
 
     let mut changed_window_ids = HashSet::new();
@@ -73,6 +69,7 @@ pub(crate) fn pixel_zoom_system(
                 &changed_window_ids,
                 &changed_image_handles,
             ) || camera.is_added()
+                || projection.is_changed()
             {
                 let logical_size = match camera.logical_target_size() {
                     Some(size) => size,
@@ -85,12 +82,15 @@ pub(crate) fn pixel_zoom_system(
                 };
 
                 let zoom = auto_zoom(pixel_zoom, logical_size) as f32;
-                match projection.scaling_mode {
-                    ScalingMode::WindowSize => {
-                        projection.scale = 1.0 / zoom;
-                    }
+                let scale = 1.0 / zoom;
 
-                    _ => projection.scaling_mode = ScalingMode::WindowSize,
+                match projection.as_mut() {
+                    Projection::Orthographic(projection) => {
+                        if scale != projection.scale {
+                            projection.scale = scale;
+                        }
+                    }
+                    _ => continue,
                 }
 
                 if pixel_viewport.is_some() {
@@ -111,7 +111,7 @@ fn is_changed(
             changed_window_ids.contains(&window_ref.entity())
         }
         NormalizedRenderTarget::Image(image_handle) => {
-            changed_image_handles.contains(&image_handle.id())
+            changed_image_handles.contains(&image_handle.handle.id())
         }
         NormalizedRenderTarget::TextureView(_) => true,
     }

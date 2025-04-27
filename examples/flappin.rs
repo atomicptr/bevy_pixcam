@@ -3,8 +3,6 @@ use bevy::prelude::*;
 use bevy::sprite::Anchor;
 use bevy_pixcam::{PixelCameraPlugin, PixelViewport, PixelZoom};
 
-// GAME CONSTANTS /////////////////////////////////////////////////////////////
-
 const WIDTH: f32 = 240.0;
 const HEIGHT: f32 = 240.0;
 const LEFT: f32 = -WIDTH / 2.0;
@@ -29,8 +27,6 @@ const BIRD_RADIUS: f32 = 6.0;
 const FALLING_JERK: f32 = -2300.0;
 const FLAP_VELOCITY: f32 = 100.0;
 const FLAP_ACCELERATION: f32 = 90.0;
-
-// SETUP //////////////////////////////////////////////////////////////////////
 
 #[derive(States, Default, Clone, Eq, PartialEq, Hash, Debug)]
 enum GameState {
@@ -145,8 +141,6 @@ fn setup(
     ));
 }
 
-// INPUT MAPPING //////////////////////////////////////////////////////////////
-
 #[derive(Resource)]
 struct Action {
     just_pressed: bool,
@@ -168,8 +162,6 @@ fn on_press(
         action.just_pressed = true;
     }
 }
-
-// START SCREEN ///////////////////////////////////////////////////////////////
 
 fn press_to_start(
     mut action: ResMut<Action>,
@@ -193,8 +185,6 @@ fn press_to_start(
         next_state.set(GameState::Playing);
     }
 }
-
-// THE BIRD ///////////////////////////////////////////////////////////////////
 
 // Component
 #[derive(Component)]
@@ -339,8 +329,6 @@ fn collision_detection(
     }
 }
 
-// THE PILLARS ////////////////////////////////////////////////////////////////
-
 // Component
 #[derive(Component)]
 struct Pillar;
@@ -382,8 +370,6 @@ fn despawn_pillars(mut commands: Commands, pillars: Query<Entity, With<Pillar>>)
         commands.entity(id).despawn();
     }
 }
-
-// THE CLOUDS /////////////////////////////////////////////////////////////////
 
 // Component
 #[derive(Component)]
@@ -428,8 +414,6 @@ fn animate_clouds(
     }
 }
 
-// UTILITIES //////////////////////////////////////////////////////////////////
-
 fn circle_box_collide(
     cx: f32,
     cy: f32,
@@ -449,8 +433,6 @@ fn circle_box_collide(
 fn clamp(v: f32, lower: f32, upper: f32) -> f32 {
     lower.max(upper.min(v))
 }
-
-// RNG ////////////////////////////////////////////////////////////////////////
 
 #[derive(Resource)]
 struct FlapTimer(Timer);
