@@ -1,15 +1,18 @@
 [package]
-name = "bevy_pixel_camera"
+name = "bevy_pixcam"
 version = "0.15.0"
-authors = ["drakmaniso <moussault.laurent@gmail.com>"]
+authors = [
+    "drakmaniso <moussault.laurent@gmail.com>",
+    "Christopher Kaster <me@atomicptr.de>",
+]
 edition = "2024"
 description = "A simple pixel-perfect camera plugin for Bevy, suitable for pixel-art"
 readme = "README.md"
-repository = "https://github.com/drakmaniso/bevy_pixel_camera"
+repository = "https://github.com/atomicptr/bevy_pixcam"
 keywords = ["bevy", "graphics", "2d", "pixels", "pixel-art"]
 categories = ["graphics", "game-development"]
-exclude = ["assets/**", ".vscode/**"]
-license = "MIT OR Apache-2.0"
+exclude = ["assets/**", "devenv*"]
+license = "MIT"
 
 [dependencies]
 bevy = { version = "0.15.0", default-features = false, features = [
@@ -27,7 +30,7 @@ bevy = { version = "0.15.0", default-features = false, features = [
     "png",
     "multi_threaded",
     "x11",
-    "wayland"
+    "wayland",
 ] }
 
 [[example]]

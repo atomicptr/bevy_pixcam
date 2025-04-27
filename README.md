@@ -1,16 +1,18 @@
-# bevy_pixel_camera
+# bevy_picam
 
 A simple camera plugin for the Bevy game engine, to help with the use of
 pixel-art sprites.
 
 This crates provides a plugin to automatically configure Bevy's
-`Camera2dBundle`. It works by setting the camera to an integer scaling
+`Camera2d`. It works by setting the camera to an integer scaling
 factor (using Bevy's `ScalingMode::WindowSize`), and automatically updating
 the zoom level so that the specified target resolution fills as much of the
 sceen as possible.
 
 The plugin can also automatically set and resize the viewport of the camera
 to match the target resolution.
+
+This is a hard fork of [bevy_pixel_camera](https://github.com/drakmaniso/bevy_pixel_camera)
 
 ## Comparison with other methods
 
@@ -48,7 +50,7 @@ the center by default), otherwise it won't be aligned with virtual pixels.
 ```rust
 use bevy::prelude::*;
 use bevy::sprite::Anchor;
-use bevy_pixel_camera::{
+use bevy_pixcam::{
     PixelCameraPlugin, PixelZoom, PixelViewport
 };
 
@@ -90,61 +92,14 @@ cargo run --example flappin
 
 ## Bevy versions supported
 
-| bevy | bevy_pixel_camera |
-|------|-------------------|
-| 0.15 | 0.15              |
-| 0.13 | 0.13              |
-| 0.12 | 0.12              |
-| 0.11 | 0.5.2             |
-| 0.10 | 0.4.1             |
-| 0.9  | 0.3               |
-| 0.8  | 0.2               |
+| bevy   | bevy_pixcam |
+|--------|-------------|
+| 0.15.x | 0.15.x      |
 
-### Migration guide: 0.4 to 0.5 (Bevy 0.10 to 0.11)
+## Migrating from bevy_pixel_camera
 
-The `PixelBorderPlugin` has been deprecated. If you want a border around
-your virtual resolution, pass `true` to the `set_viewport` argument when
-creating the camera bundle (see example above).
-
-### Migration guide: 0.5 to 0.12 (Bevy 0.11 to 0.12)
-
-The `PixelCameraBundle` has been deprecated. Replace it with a standard
-`Camera2dBundle`, to which you add the `PixelZoom` and `PixelViewport`
-components.
-
-### Migration guide: 0.12 to 0.15 (Bevy 0.12 to 0.15)
-
-There were a lot of API changes from 0.12 to 0.15 including numerous
-trait method name changes and some functional changes as well.
-
-* Removed `required-features` from examples in Cargo.toml
-* Replaced deprecated `push_children` with `add_children`
-* Changes to work with method changes in `CameraProjection`
-* Changed to work with API renames in `VisibilitySystems`
-* `ScalingMode::WindowSize` changes, zoom no longer held in Enum
-* Flappin Example
-  * Inserted gamestate as a resource
-  * `close_on_esc` deprecated, added own implementation
-  * Arguments to `TextureAtlasLayout::from_grid` updated
-  * Replaced deprecated `Camera2dBundle`  with `Camera2d` component
-  * Removed gamepad code
-    * 0.15 crashes if no gamepad is plugged in
-  * Removed queries for `TextureAtlas` components
-    * `TextureAtlas` are now optional members of `Sprite`
-* Mire Example
-  * Updated for 0.15
-* Added readme example
-    * Duplicate of example code in this file
+- Replace all instances of the string `bevy_pixel_camera` with `bevy_pixcam`
 
 ## License
 
-Licensed under either of
-
-- Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
-  <http://www.apache.org/licenses/LICENSE-2.0>)
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or
-  <http://opensource.org/licenses/MIT>)
-
-at your option.
-
-License: MIT OR Apache-2.0
+MIT

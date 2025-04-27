@@ -1,12 +1,11 @@
 #![deprecated(since = "0.5.1", note = "please use the `PixelZoom` component instead")]
-#![allow(deprecated)]
 
 use bevy::math::Vec3A;
 use bevy::prelude::{
     Bundle, Camera2d, Component, EventReader, GlobalTransform, Mat4, Query, Reflect,
     ReflectComponent, Transform, UVec2, With,
 };
-use bevy::render::camera::{Camera, CameraProjection, CameraRenderGraph, Viewport, SubCameraView};
+use bevy::render::camera::{Camera, CameraProjection, CameraRenderGraph, SubCameraView, Viewport};
 use bevy::render::primitives::Frustum;
 use bevy::render::view::VisibleEntities;
 use bevy::window::{Window, WindowResized};
@@ -144,8 +143,6 @@ pub struct PixelProjection {
 }
 
 impl CameraProjection for PixelProjection {
-
-
     fn get_clip_from_view(&self) -> Mat4 {
         Mat4::orthographic_rh(
             self.left,
@@ -194,7 +191,6 @@ impl CameraProjection for PixelProjection {
             Vec3A::new(self.left, self.bottom, z_far),   // bottom left
         ]
     }
-
 
     fn get_clip_from_view_for_sub(&self, _sub_view: &SubCameraView) -> Mat4 {
         println!("This shouldn't be called I think!");

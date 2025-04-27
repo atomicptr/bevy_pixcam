@@ -1,7 +1,7 @@
 use bevy::math::vec3;
 use bevy::prelude::*;
 use bevy::sprite::Anchor;
-use bevy_pixel_camera::{PixelCameraPlugin, PixelViewport, PixelZoom};
+use bevy_pixcam::{PixelCameraPlugin, PixelViewport, PixelZoom};
 
 // GAME CONSTANTS /////////////////////////////////////////////////////////////
 
@@ -143,12 +143,6 @@ fn setup(
         },
         PixelViewport,
     ));
-    // Deprecated:
-    // commands.spawn(bevy_pixel_camera::PixelCameraBundle::from_resolution(
-    //     WIDTH as i32,
-    //     HEIGHT as i32,
-    //     true,
-    // ));
 }
 
 // INPUT MAPPING //////////////////////////////////////////////////////////////

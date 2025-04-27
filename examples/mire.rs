@@ -1,10 +1,9 @@
 use bevy::math::{uvec2, vec3};
 use bevy::prelude::*;
-use bevy_pixel_camera::{PixelCameraPlugin, PixelViewport, PixelZoom};
+use bevy_pixcam::{PixelCameraPlugin, PixelViewport, PixelZoom};
 
 // Pixel screen dimensions
 const SCREEN_DIMS: UVec2 = uvec2(320, 180);
-
 
 // Main
 fn main() {
