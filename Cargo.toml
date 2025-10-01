@@ -15,7 +15,7 @@ exclude = ["assets/**", "devenv*"]
 license = "MIT"
 
 [dependencies]
-bevy = { version = "0.17.0", default-features = false, features = [
+bevy = { version = "0.17.1", default-features = true, features = [
     "bevy_core_pipeline",
     "bevy_render",
     "bevy_sprite",
@@ -23,7 +23,7 @@ bevy = { version = "0.17.0", default-features = false, features = [
 ] }
 
 [dev-dependencies]
-bevy = { version = "0.17.0", default-features = false, features = [
+bevy = { version = "0.17.1", default-features = false, features = [
     "bevy_winit",
     "bevy_asset",
     "bevy_state",
