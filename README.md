@@ -97,7 +97,8 @@ for all kinds of changes, be it bug fixes or feature updates.
 
 | bevy   | bevy_pixcam | branch |
 |--------|-------------|--------|
-| 0.16.x | 0.16.x      | master |
+| 0.17.x | 0.17.x      | master |
+| 0.16.x | 0.16.x      | 0.16   |
 | 0.15.x | 0.15.x      | 0.15   |
 
 ## Migrating from bevy_pixel_camera

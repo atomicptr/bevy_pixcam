@@ -171,7 +171,7 @@ fn press_to_start(
     mut birds: Query<(&mut Transform, &mut BirdPhysics), With<Bird>>,
 ) {
     timer.tick(time.delta());
-    if !timer.finished() {
+    if !timer.is_finished() {
         action.just_pressed = false;
         return;
     }
@@ -206,16 +206,16 @@ fn mk_sprite(
     index: usize,
     image: Handle<Image>,
     layout: Handle<TextureAtlasLayout>,
-) -> (Sprite, Transform) {
+) -> (Sprite, Transform, Anchor) {
     (
         Sprite {
             image,
-            anchor,
             texture_atlas: Some(TextureAtlas { layout, index }),
 
             ..Default::default()
         },
         Transform::from_translation(pos),
+        anchor,
     )
 }
 
@@ -228,7 +228,7 @@ fn spawn_bird(mut commands: Commands, textures: Res<Textures>) {
         },
         mk_sprite(
             vec3(BIRD_X, 0.0, 1.0),
-            Anchor::BottomLeft,
+            Anchor::BOTTOM_LEFT,
             0,
             textures.bird.clone(),
             textures.bird_layout.clone(),
@@ -243,7 +243,7 @@ fn animate_flying_bird(
 ) {
     for (mut timer, mut sprite) in query.iter_mut() {
         timer.0.tick(time.delta());
-        if timer.0.finished() {
+        if timer.0.is_finished() {
             let atlas = sprite.texture_atlas.as_mut().unwrap();
 
             atlas.index = (atlas.index + 1) % 4;
@@ -340,11 +340,11 @@ fn spawn_pillars(mut commands: Commands, textures: Res<Textures>, mut rng: ResMu
         commands.spawn((
             Pillar,
             Sprite {
-                anchor: Anchor::BottomLeft,
                 image: textures.pillars.clone(),
                 ..Default::default()
             },
             Transform::from_xyz(x, (y - PILLAR_HEIGHT / 2.0).round(), 2.0),
+            Anchor::BOTTOM_LEFT,
         ));
         x += PILLAR_SPACING;
     }
@@ -378,7 +378,7 @@ struct Cloud;
 fn spawn_clouds(mut commands: Commands, textures: Res<Textures>, mut rng: ResMut<Rng>) {
     let img = &textures.clouds;
     let layout = &textures.clouds_layout;
-    let anchor = Anchor::CenterLeft;
+    let anchor = Anchor::CENTER_LEFT;
 
     let mut x = LEFT;
 

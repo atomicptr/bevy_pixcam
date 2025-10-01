@@ -1,7 +1,7 @@
 use bevy::{
+    camera::{NormalizedRenderTarget, Viewport},
     platform::collections::HashSet,
     prelude::*,
-    render::camera::{NormalizedRenderTarget, Viewport},
     window::{PrimaryWindow, WindowCreated, WindowResized},
 };
 
@@ -33,9 +33,9 @@ pub enum PixelZoom {
 pub struct PixelViewport;
 
 pub(crate) fn pixel_zoom_system(
-    mut window_resized_events: EventReader<WindowResized>,
-    mut window_created_events: EventReader<WindowCreated>,
-    mut image_asset_events: EventReader<AssetEvent<Image>>,
+    mut window_resized_events: MessageReader<WindowResized>,
+    mut window_created_events: MessageReader<WindowCreated>,
+    mut image_asset_events: MessageReader<AssetEvent<Image>>,
     primary_window: Query<Entity, With<PrimaryWindow>>,
     mut cameras: Query<(
         &mut Camera,
@@ -114,6 +114,10 @@ fn is_changed(
             changed_image_handles.contains(&image_handle.handle.id())
         }
         NormalizedRenderTarget::TextureView(_) => true,
+        NormalizedRenderTarget::None {
+            width: _,
+            height: _,
+        } => true,
     }
 }
 

@@ -5,15 +5,17 @@
     udev
     alsa-lib-with-plugins
     vulkan-loader
+    vulkan-tools
+    libudev-zero
 
     # x11
+    libxkbcommon
     xorg.libX11
     xorg.libXcursor
     xorg.libXi
     xorg.libXrandr
 
     # wayland
-    libxkbcommon
     wayland
   ];
 
@@ -24,6 +26,9 @@
       pkgs.libxkbcommon
       pkgs.vulkan-loader
       pkgs.wayland
+      pkgs.xorg.libX11
+      pkgs.xorg.libXcursor
+      pkgs.xorg.libXi
     ];
   };
 }

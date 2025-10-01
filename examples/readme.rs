@@ -1,5 +1,4 @@
-use bevy::prelude::*;
-use bevy::sprite::Anchor;
+use bevy::{prelude::*, sprite::Anchor};
 use bevy_pixcam::{PixelCameraPlugin, PixelViewport, PixelZoom};
 
 fn main() {
@@ -20,9 +19,11 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         PixelViewport,
     ));
 
-    commands.spawn(Sprite {
-        image: asset_server.load("mire-64x64.png"),
-        anchor: Anchor::BottomLeft,
-        ..Default::default()
-    });
+    commands.spawn((
+        Sprite {
+            image: asset_server.load("mire-64x64.png"),
+            ..Default::default()
+        },
+        Anchor::BOTTOM_LEFT,
+    ));
 }
