@@ -5,6 +5,8 @@ use bevy::{
     window::{PrimaryWindow, WindowCreated, WindowResized},
 };
 
+const FLOAT_ERROR_MARGIN: f32 = 0.0001;
+
 /// Configure a `Camera2d` to use integer scaling and automatically match
 /// a specified resolution.
 ///
@@ -64,39 +66,36 @@ pub(crate) fn pixel_zoom_system(
         .collect();
 
     for (mut camera, target, pixel_zoom, pixel_viewport, mut projection) in &mut cameras {
-        if let Some(normalized_target) = target.normalize(primary_window) {
-            if is_changed(
+        if let Some(normalized_target) = target.normalize(primary_window)
+            && (is_changed(
                 &normalized_target,
                 &changed_window_ids,
                 &changed_image_handles,
             ) || camera.is_added()
-                || projection.is_changed()
-            {
-                let logical_size = match camera.logical_target_size() {
-                    Some(size) => size,
-                    None => continue,
-                };
+                || projection.is_changed())
+        {
+            let Some(logical_size) = camera.logical_target_size() else {
+                continue;
+            };
 
-                let physical_size = match camera.physical_target_size() {
-                    Some(size) => size,
-                    None => continue,
-                };
+            let Some(physical_size) = camera.physical_target_size() else {
+                continue;
+            };
 
-                let zoom = auto_zoom(pixel_zoom, logical_size) as f32;
-                let scale = 1.0 / zoom;
+            let zoom = auto_zoom(pixel_zoom, logical_size) as f32;
+            let scale = 1.0 / zoom;
 
-                match projection.as_mut() {
-                    Projection::Orthographic(projection) => {
-                        if scale != projection.scale {
-                            projection.scale = scale;
-                        }
+            match projection.as_mut() {
+                Projection::Orthographic(projection) => {
+                    if (scale - projection.scale).abs() > FLOAT_ERROR_MARGIN {
+                        projection.scale = scale;
                     }
-                    _ => continue,
                 }
+                _ => continue,
+            }
 
-                if pixel_viewport.is_some() {
-                    set_viewport(&mut camera, pixel_zoom, zoom, physical_size, logical_size);
-                }
+            if pixel_viewport.is_some() {
+                set_viewport(&mut camera, pixel_zoom, zoom, physical_size, logical_size);
             }
         }
     }
@@ -114,8 +113,8 @@ fn is_changed(
         NormalizedRenderTarget::Image(image_handle) => {
             changed_image_handles.contains(&image_handle.handle.id())
         }
-        NormalizedRenderTarget::TextureView(_) => true,
-        NormalizedRenderTarget::None {
+        NormalizedRenderTarget::TextureView(_)
+        | NormalizedRenderTarget::None {
             width: _,
             height: _,
         } => true,
