@@ -1,5 +1,5 @@
 use bevy::{
-    camera::{NormalizedRenderTarget, Viewport},
+    camera::{NormalizedRenderTarget, RenderTarget, Viewport},
     platform::collections::HashSet,
     prelude::*,
     window::{PrimaryWindow, WindowCreated, WindowResized},
@@ -39,6 +39,7 @@ pub(crate) fn pixel_zoom_system(
     primary_window: Query<Entity, With<PrimaryWindow>>,
     mut cameras: Query<(
         &mut Camera,
+        &RenderTarget,
         &PixelZoom,
         Option<&PixelViewport>,
         &mut Projection,
@@ -62,8 +63,8 @@ pub(crate) fn pixel_zoom_system(
         })
         .collect();
 
-    for (mut camera, pixel_zoom, pixel_viewport, mut projection) in &mut cameras {
-        if let Some(normalized_target) = camera.target.normalize(primary_window) {
+    for (mut camera, target, pixel_zoom, pixel_viewport, mut projection) in &mut cameras {
+        if let Some(normalized_target) = target.normalize(primary_window) {
             if is_changed(
                 &normalized_target,
                 &changed_window_ids,
