@@ -186,3 +186,36 @@ fn set_viewport(
         ..Default::default()
     });
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn fixed_zoom_is_clamped_to_at_least_one() {
+        let size = Vec2::new(1920.0, 1080.0);
+
+        assert_eq!(auto_zoom(&PixelZoom::Fixed(0), size), 1);
+        assert_eq!(auto_zoom(&PixelZoom::Fixed(-5), size), 1);
+        assert_eq!(auto_zoom(&PixelZoom::Fixed(1), size), 1);
+        assert_eq!(auto_zoom(&PixelZoom::Fixed(3), size), 3);
+    }
+
+    #[test]
+    fn other_modes_still_clamp_to_one() {
+        let size = Vec2::new(100.0, 100.0);
+
+        assert_eq!(
+            auto_zoom(
+                &PixelZoom::FitSize {
+                    width: 200,
+                    height: 200
+                },
+                size
+            ),
+            1
+        );
+        assert_eq!(auto_zoom(&PixelZoom::FitWidth(200), size), 1);
+        assert_eq!(auto_zoom(&PixelZoom::FitHeight(200), size), 1);
+    }
+}
