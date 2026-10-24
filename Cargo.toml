@@ -1,6 +1,6 @@
 [package]
 name = "bevy_pixcam"
-version = "0.20.0"
+version = "0.20.1"
 authors = [
     "drakmaniso <moussault.laurent@gmail.com>",
     "Christopher Kaster <me@atomicptr.de>",
