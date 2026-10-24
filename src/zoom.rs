@@ -12,10 +12,11 @@ const FLOAT_ERROR_MARGIN: f32 = 0.0001;
 ///
 /// Note: when this component is present, a plugin system will automatically
 /// update the `ScalingMode` of the camera bundle.
-#[derive(Component, Debug, Clone, PartialEq)]
+#[derive(Component, Debug, Clone, PartialEq, FromTemplate)]
 pub enum PixelZoom {
     /// Manually specify the camera zoom, i.e. the number of screen pixels
     /// (logical pixels) used to display one virtual pixel (world unit).
+    #[default]
     Fixed(i32),
     /// Automatically set the camera zoom to fit the specified resolution inside
     /// the window.
@@ -137,7 +138,7 @@ fn auto_zoom(mode: &PixelZoom, logical_size: Vec2) -> i32 {
             let zoom = (logical_size.y as i32) / i32::max(*height, 1);
             i32::max(zoom, 1)
         }
-        PixelZoom::Fixed(zoom) => *zoom,
+        PixelZoom::Fixed(zoom) => i32::max(*zoom, 1),
     }
 }
 
